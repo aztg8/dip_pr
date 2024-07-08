@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block carousel %}
+{% endblock carousel %}
+
+{% block main %}
+<h2 class="text-center mt-3 mb-3">Корзина</h2>
+<div class="container mt-3 mb-3">
+    <div id="cart-items" class="row justify-content-center">
+        {% for item in cart_items %}
+        <div class="col-md-6 d-flex justify-content-center mb-3">
+            <div class="card" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{{ item.product.image.url }}" class="img-fluid rounded-start" alt="{{ item.product.title }}">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body d-flex flex-column justify-content-between">
+                            <h5 class="card-title"><a href="{% url 'product_detail' item.product.id %}" style="text-decoration: none; color: inherit;">{{ item.product.title }}</a></h5>
+                            <div class="card-text mb-3">
+                                <form method="post" action="{% url 'update_cart_item' item.id %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="button" class="btn-quantity btn btn-outline-secondary" onclick="updateQuantity(this, '{{ item.id }}', -1)">-</button>
+                                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="quantity form-control w-25 d-inline-block mx-2">
+                                    <button type="button" class="btn-quantity btn btn-outline-secondary" onclick="updateQuantity(this, '{{ item.id }}', 1)">+</button>
+                                </form>
+                            </div>
+                            <p class="card-text mb-3"><strong>Цена:</strong> <span class="price">{{ item.total_item_price }}</span> сум</p>
+                            <form method="post" action="{% url 'remove_from_cart' item.id %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h4 class="text-center">Общая сумма: <span class="price">{{ total_price }}</span> сум</h4>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-6 text-center">
+            <a href="{% url 'order_create' %}" class="btn btn-primary">Оформить заказ</a>
+        </div>
+    </div>
+</div>
+
+<script>
+function updateQuantity(button, itemId, change) {
+    var quantityInput = button.parentNode.querySelector('.quantity');
+    var newQuantity = parseInt(quantityInput.value) + change;
+    if (newQuantity > 0) {
+        quantityInput.value = newQuantity;
+        quantityInput.form.submit();
+    }
+}
+</script>
+{% endblock main %}

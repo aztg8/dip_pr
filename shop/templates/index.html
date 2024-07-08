@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block main %}
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-3">
+            <div class="list-group mb-4">
+                {% for category in categories %}
+                <a href="{% url 'sort_by_category' category.id %}"
+                   class="list-group-item list-group-item-action shadow" style="color: #000000; background-color: #f0e6ff;">
+                    {{ category.title }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-9">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-3">
+                {% for product in products %}
+                <div class="col mb-4">
+                    <div class="card h-100 shadow">
+                        {% load static %}
+                        <a href="{% url 'product_detail' product.id %}">
+                            <img src="{{ product.image.url }}" class="card-img-top" alt="...">
+                        </a>
+                        <div class="card-body">
+                            <h6 class="card-title">{{ product.title }}</h6>
+                        </div>
+                        <div class="card-footer bg-light d-flex justify-content-between align-items-center">
+                            <p class="card-text mb-0">
+                                <span class="product-price" data-price="{{ product.price }}" style="font-size: 1.2em; color: #8a2be2;">
+                                    {{ product.price }} сум
+                                </span>
+                            </p>
+                            <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary btn-sm" style="background-color: #d8bfff; border-color: #d8bfff; color: #ffffff;"><i class="bi bi-cart3"></i></a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock main %}

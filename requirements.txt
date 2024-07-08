@@ -1,0 +1,6 @@
+Django
+django-jazzmin
+pillow
+python-dotenv
+sqlparse
+tzdata

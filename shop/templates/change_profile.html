@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block carousel %}
+{% endblock carousel %}
+
+{% block main %}
+
+<div class="container mt-3 mb-3">
+    <div class="d-flex justify-content-center">
+        <div class="col-6">
+            <div class="card p-4 shadow">
+                <h5 class="text-center">{{ title }}</h5>
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ user_form.as_p }}
+                    {{ profile_form.as_p }}
+                    <button class="btn btn-primary" type="submit">
+                        Изменить
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}

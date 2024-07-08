@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block carousel %}
+{% endblock carousel %}
+
+{% block main %}
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.title }}">
+        </div>
+        <div class="col-md-6">
+            <h1 class="display-4">{{ product.title }}</h1>
+            <div class="mt-5 mb-5">
+                <strong style="font-size: 2rem;">Цена: </strong>
+                <span id="total-price" style="font-size: 2rem;">{{ product.price }} сум</span>
+            </div>
+            <div class="mt-10 mb-5">
+                <label for="quantity" style="font-size: 1.25rem; font-weight: bold;">Количество:</label>
+                <input type="number" id="quantity" name="quantity" value="1" min="1" class="form-control w-25 d-inline-block" style="font-size: 1.25rem;">
+            </div>
+            <div class="mt-5 mb-3 d-flex align-items-center">
+                <form action="{% url 'add_to_cart' product.id %}" method="POST" class="d-inline-block">
+                    {% csrf_token %}
+                    <input type="hidden" name="quantity" value="1" id="form-quantity">
+                    <button type="submit" class="btn" style="background-color: #d8bfff; margin-right: 10px;">Добавить в корзину</button>
+                </form>
+                <form action="{% url 'add_to_favorites' product.id %}" method="POST" class="d-inline-block">
+                    {% csrf_token %}
+                    <button type="submit" class="btn" style="background-color: #FFC0CB; margin-left: 10px;">Добавить в Избранное</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <ul class="nav nav-tabs" id="productTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true">Описание товара</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab" aria-controls="reviews" aria-selected="false">Отзывы ({{ product.reviews.count }})</button>
+        </li>
+    </ul>
+    <div class="tab-content" id="productTabContent">
+        <div class="tab-pane fade show active mt-3 mb-3" id="description" role="tabpanel" aria-labelledby="description-tab">
+            <h5>{{ product.description }}</h5>
+        </div>
+        <div class="mt-3 mb-3">
+            <a href="{% url 'index' %}">Назад к покупкам</a>
+        </div>
+        <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+            {% for review in product.reviews.all %}
+                <div class="review mb-3">
+                    <strong>{{ review.user.username }}</strong>
+                    <div class="rating" data-rating="{{ review.rating }}">
+                        {% for i in rating_range %}
+                            <span class="fa fa-star {% if review.rating >= i %}checked{% endif %}"></span>
+                        {% endfor %}
+                    </div>
+                    <p>{{ review.text }}</p>
+                    <div class="d-flex justify-content-between">
+                        <span>{{ review.created_at }}</span>
+                    </div>
+                </div>
+            {% empty %}
+            <div class="rew mt-3 mb-3">
+                <p>Отзывов пока нет.</p>
+            </div>
+            {% endfor %}
+            <div class="rew mt-3 mb-3">
+                <a href="{% url 'add_review' product.id %}">Добавить отзыв</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .review {
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+    .review strong {
+        font-size: 1.25rem;
+    }
+    .review p {
+        margin: 10px 0;
+    }
+    .rating {
+        display: flex;
+        margin-bottom: 10px;
+    }
+    .fa-star {
+        font-size: 1.5rem;
+        color: #ddd;
+    }
+    .fa-star.checked {
+        color: gold;
+    }
+</style>
+
+{% endblock main %}

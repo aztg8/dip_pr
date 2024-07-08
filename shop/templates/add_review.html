@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block carousel %}
+{% endblock carousel %}
+
+{% block main %}
+<div class="container mt-5 mb-5">
+    <div class="card shadow">
+        <div class="card-header" style="background-color: #d8bfff;">
+            <h2 class="card-title mb-0">{{ title }}</h2>
+        </div>
+        <div class="card-body">
+            <form method="post" action="">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <div class="form-group">
+                    <label for="id_rating">Ваша оценка</label>
+                    <div class="rating">
+                        {% for i in rating_range|slice:"::-1" %}
+                            <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}" {% if form.rating.value == i|stringformat:"s" %}checked{% endif %}>
+                            <label for="star{{ i }}" class="fa fa-star"></label>
+                        {% endfor %}
+                    </div>
+                    {{ form.rating.errors }}
+                </div>
+                <div class="form-group">
+                    <label for="id_text">Ваш отзыв</label>
+                    {{ form.text }}
+                    {{ form.text.errors }}
+                </div>
+                <button type="submit" class="btn btn-primary">Отправить отзыв</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .rating {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+    .rating input {
+        display: none;
+    }
+    .rating label {
+        font-size: 2rem;
+        color: #ddd;
+        cursor: pointer;
+    }
+    .rating input:checked ~ label {
+        color: gold;
+    }
+    .rating label:hover,
+    .rating label:hover ~ label {
+        color: gold;
+    }
+</style>
+{% endblock main %}

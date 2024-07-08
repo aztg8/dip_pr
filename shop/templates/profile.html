@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block carousel %}
+{% endblock carousel %}
+
+{% block main %}
+
+<div class="container mt-3 mb-3">
+    <div class="main-body">
+
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="main-breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'index' %}">Главная страница</a></li>
+
+                <li class="breadcrumb-item active" aria-current="page">Профиль пользователя</li>
+            </ol>
+        </nav>
+        <!-- /Breadcrumb -->
+
+        <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center">
+                            <img src="{% if profile.photo %}
+                                      {{ profile.photo.url }}
+                                      {% else %}
+                                      https://miro.medium.com/v2/resize:fit:720/1*W35QUSvGpcLuxPo3SRTH4w.png                                      {% endif %}" alt="Admin"
+                                 class="rounded-circle" width="150">
+                            <div class="mt-3">
+                                <h4>{{ profile.user.username }}</h4>
+                                <p class="text-muted font-size-sm">{{ profile.address }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-3">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0">
+                                <i class="fa-brands fa-telegram mx-2"></i>
+                                Telegram
+                            </h6>
+                            <span class="text-secondary">{{ profile.telegram }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Имя</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ profile.user.first_name }} {{ profile.user.last_name }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Email</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ profile.user.email }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Номер телефона</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ profile.phone_number }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Адрес</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ profile.address }}
+                            </div>
+                        </div>
+                        {% if request.user.id == profile.user.id %}
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <a class="btn btn-info " target="__blank"
+                                   href="{% url 'change_profile' profile.user.id %}">Изменить профиль</a>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock main %}

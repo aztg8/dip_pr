@@ -1,0 +1,61 @@
+<script src="https://kit.fontawesome.com/64e9ce9388.js"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+<script>
+    function formatPrice(price) {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    }
+
+    document.querySelectorAll('.product-price').forEach(function(priceElement) {
+        let price = parseInt(priceElement.getAttribute('data-price').replace(/\s+/g, ''));
+        priceElement.innerText = formatPrice(price) + ' сум';
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const pricePerUnit = {{ product.price }};
+        const quantityInput = document.getElementById('quantity');
+        const totalPriceElement = document.getElementById('total-price');
+        const formQuantityInput = document.getElementById('form-quantity');
+
+        function formatPrice(price) {
+            return price.toLocaleString('ru-RU') + ' сум';
+        }
+
+        quantityInput.addEventListener('input', function() {
+            const quantity = parseInt(this.value) || 1;
+            const totalPrice = pricePerUnit * quantity;
+            totalPriceElement.textContent = formatPrice(totalPrice);
+            formQuantityInput.value = quantity;
+        });
+
+        // Initial format
+        totalPriceElement.textContent = formatPrice(pricePerUnit);
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function formatPrice(price) {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        }
+
+        document.querySelectorAll('.price').forEach(function(priceElement) {
+            let price = parseInt(priceElement.textContent.trim());
+            if (!isNaN(price)) {
+                priceElement.textContent = formatPrice(price);
+            }
+        });
+    });
+</script>
+<script>
+function updateQuantity(button, itemId, change) {
+    var quantityInput = button.parentNode.querySelector('.quantity');
+    var newQuantity = parseInt(quantityInput.value) + change;
+    if (newQuantity > 0) {
+        quantityInput.value = newQuantity;
+        quantityInput.form.submit();
+    }
+}
+</script>

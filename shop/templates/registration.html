@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block carousel %}
+{% endblock carousel %}
+
+{% block main %}
+<div class="container mt-3 mb-3">
+    <div class="d-flex justify-content-center">
+        <div class="col-4">
+            <div class="card shadow p-3">
+                <h4 class="text-center mb-3">{{ title }}</h4>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button class="btn btn-primary btn-lg" type="submit">
+                        Зарегистрироваться
+                    </button>
+                </form>
+                <div class="text-center mt-3">
+                    Есть аккаунт? <a href="{% url 'login' %}">Вход</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock main %}
